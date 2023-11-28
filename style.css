@@ -5,6 +5,11 @@ body{background-color:black ! important;
 .row{
     row-gap:15px;
 }
+#title{
+    color: aliceblue;
+    margin-top:20px;
+    text-decoration: underline;
+}
 
 .card{
     background-color: rgb(92, 86, 87) ! important;

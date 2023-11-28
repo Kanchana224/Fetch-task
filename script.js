@@ -1,13 +1,18 @@
-
 const weatherKey = "1946412e1c80ec2c0c7ed221cc24120f";
 const url = "https://restcountries.com/v3.1/all";
 
 const container = document.createElement("div");
-container.className=("container");
+container.className = "container";
 document.body.append(container);
 
+const title = document.createElement("h1");
+title.id = "title";
+title.className = "text-center";
+title.innerText = "Country Information";
+container.append(title);
+
 const row = document.createElement("div");
-row.className=("row");
+row.className = "row";
 container.append(row);
 
 fetch(url)
@@ -30,9 +35,9 @@ fetch(url)
           <h5 class="card-title">Latlng: ${countries[i].latlng}</h5>
           <h5 class="card-title">Country code: ${countries[i].cca2}</h5>
         </div>
-        <button class="btn btn-primary align" data-country-code="${countries[i].cca2}" id="button-${i}">Click for weather</button>`;
+        <button class="btn btn-primary align" data-country-code="${countries[i].cca2}" id="button">Click for weather</button>`;
 
-      const wbtn = card.querySelector(`#button-${i}`);
+      const wbtn = card.querySelector("#button");
       wbtn.addEventListener("click", () => {
         const countryCode = wbtn.getAttribute("data-country-code");
         getWeather(countryCode);
@@ -45,7 +50,7 @@ fetch(url)
 
 function getWeather(countryCode) {
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${countryCode}&appid=${weatherKey}`;
-  
+
   fetch(weatherUrl)
     .then((res) => res.json())
     .then((data) => {
