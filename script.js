@@ -1,4 +1,4 @@
-const weatherKey = "1946412e1c80ec2c0c7ed221cc24120f";
+
 const url = "https://restcountries.com/v3.1/all";
 
 const container = document.createElement("div");
@@ -20,7 +20,7 @@ fetch(url)
   .then((countries) => {
     for (let i = 0; i < countries.length; i++) {
       const column = document.createElement("div");
-      column.classList.add("col-lg-4", "col-sm-12");
+      column.classList.add("col-lg-4", "col-sm-12","col-md-");
       row.append(column);
 
       const card = document.createElement("div");
@@ -50,13 +50,21 @@ fetch(url)
 
 function getWeather(countryCode) {
   const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${countryCode}&appid=${weatherKey}`;
-
+  const weatherKey = "93372f2459ba50f22c1705d06dfb73ef";
   fetch(weatherUrl)
     .then((res) => res.json())
     .then((data) => {
-      alert(`Weather in ${countryCode}: ${data.weather[0].description}`);
+      var weatherName=data.name
+
+       if( weatherName===countryCode){
+   alert` Weather in ${data.name}: ${data.main.temp_min} min:deg&c && ${data.main.temp_max} max:deg&c`  
+       }
+       else{
+        alert`cannot find weather in this country`
+       }
     })
     .catch((error) => {
       console.log("Error fetching weather:", error);
+      alert`Error fetching weather data`
     });
 }
