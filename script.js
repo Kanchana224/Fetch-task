@@ -49,22 +49,24 @@ fetch(url)
   });
 
 function getWeather(countryCode) {
-  const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${countryCode}&appid=${weatherKey}`;
-  const weatherKey = "93372f2459ba50f22c1705d06dfb73ef";
-  fetch(weatherUrl)
-    .then((res) => res.json())
-    .then((data) => {
-      var weatherName=data.name
+  var weatherKey = "93372f2459ba50f22c1705d06dfb73ef";
+  var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${countryCode}&appid=${weatherKey}`;
 
-       if( weatherName===countryCode){
-   alert` Weather in ${data.name}: ${data.main.temp_min} min:deg&c && ${data.main.temp_max} max:deg&c`  
-       }
-       else{
-        alert`cannot find weather in this country`
-       }
+  fetch(weatherUrl)
+    .then((response) => response.json())
+    .then((weatherData) => {
+      var weatherCountryName = weatherData.name;
+
+      if (weatherCountryName === countryCode) {
+        alert(
+          `Weather in ${weatherData.name}: ${weatherData.main.temp_min} min:deg&c && ${weatherData.main.temp_max} max:deg&c`
+        );
+      } else {
+        alert("Country names do not match.");
+      }
     })
     .catch((error) => {
-      console.log("Error fetching weather:", error);
-      alert`Error fetching weather data`
+      console.error("Error fetching weather data:", error);
+      alert`Error fetching weather data.`;
     });
 }
