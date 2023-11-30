@@ -1,4 +1,3 @@
-
 const url = "https://restcountries.com/v3.1/all";
 
 const container = document.createElement("div");
@@ -20,7 +19,7 @@ fetch(url)
   .then((countries) => {
     for (let i = 0; i < countries.length; i++) {
       const column = document.createElement("div");
-      column.classList.add("col-lg-4", "col-sm-12","col-md-");
+      column.classList.add("col-lg-4", "col-sm-12", "col-md-");
       row.append(column);
 
       const card = document.createElement("div");
@@ -33,40 +32,42 @@ fetch(url)
           <h5 class="card-title">Capital: ${countries[i].capital}</h5>
           <h5 class="card-title">Region: ${countries[i].region}</h5>
           <h5 class="card-title">Latlng: ${countries[i].latlng}</h5>
-          <h5 class="card-title">Country code: ${countries[i].cca2}</h5>
-        </div>
-        <button class="btn btn-primary align" data-country-code="${countries[i].cca2}" id="button">Click for weather</button>`;
+          <h5 class="card-title">Country code: ${countries[i].cca3}</h5>
+          <div class="weatherInfo weatherInfo-${i}"></div>
+          <button class="btn btn-primary align" data-country-code="${countries[i].cca3}" id="button" data-index="${i}">Click for weather</button>
+        </div>`;
 
       const wbtn = card.querySelector("#button");
       wbtn.addEventListener("click", () => {
         const countryCode = wbtn.getAttribute("data-country-code");
-        getWeather(countryCode);
+        const index = wbtn.getAttribute("data-index");
+        getWeatherData(countryCode, index);
       });
     }
-  })
-  .catch((error) => {
-    console.log("Error fetching countries:", error);
   });
 
-function getWeather(countryCode) {
-  var weatherKey = "93372f2459ba50f22c1705d06dfb73ef";
-  var weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${countryCode}&appid=${weatherKey}`;
+function getWeatherData(countryCode, index) {
+  let apiKey = "1946412e1c80ec2c0c7ed221cc24120f";
+  let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${countryCode}&appid=${apiKey}`;
 
   fetch(weatherUrl)
     .then((response) => response.json())
     .then((weatherData) => {
       var weatherCountryName = weatherData.name;
-
-      if (weatherCountryName === countryCode) {
-        alert(
-          `Weather in ${weatherData.name}: ${weatherData.main.temp_min} min:deg&c && ${weatherData.main.temp_max} max:deg&c`
-        );
+      const weatherInformation = document.querySelector(
+        `.weatherInfo-${index}`
+      );
+   if (weatherCountryName === countryCode) {
+         setTimeout(() => {
+          weatherInformation.innerHTML = `
+          Weather in ${weatherData.name}, ${weatherData.sys.country}: ${weatherData.main.temp_min} min°C and ${weatherData.main.temp_max} max°C`;
+        }, 5000);
       } else {
-        alert("Country names do not match.");
+        weatherInformation.innerHTML = `Country names do not match.`;
       }
     })
     .catch((error) => {
       console.error("Error fetching weather data:", error);
-      alert`Error fetching weather data.`;
+      alert("Error fetching weather data.");
     });
 }
